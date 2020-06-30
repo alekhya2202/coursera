@@ -1,0 +1,76 @@
+#include <stdio.h>
+#include <stdlib.h>
+#define SIZE 100
+
+typedef struct list list;
+struct list {
+  int data;
+  list *link;
+};
+
+
+list *newNode(int info)
+{
+  list *node=malloc(sizeof(list));
+  node->data=info;
+  node->link=NULL;
+  return node;
+}
+
+void insert_first(int info, list **head)
+{
+  if(head==NULL)
+    *head=newNode(info);
+
+  else{
+    list *node=newNode(info);
+    node->link=*head;
+    *head=node;
+  }
+}
+
+void swap(list *a, list *b)
+{
+  int temp= a->data;
+  a->data=b->data;
+  b->data=temp;
+}
+
+void sort(list *head)
+{
+  list *tmp;
+  for (int i=0; i<SIZE; ++i){
+    tmp=head;
+    for(int j=0; j<SIZE-i-1; ++j){
+      if ( tmp->data > tmp->link->data )
+        swap(tmp, tmp->link);
+ 
+      tmp=tmp->link;
+    }
+  }
+}
+
+void print_list(list *head)
+{
+  puts("");
+  list *temp=head;
+  for (int i = 1; i <= SIZE; ++i){
+    printf("%d ", temp->data);
+    temp=temp->link;
+    if ((i%5)==0) puts("");
+  }
+  puts("\n");
+ 
+}
+
+int main()
+{
+  list *head=NULL;
+  for (int i=0; i<SIZE; i++)
+    insert_first(rand()%1001, &head);
+
+  print_list(head);
+  sort(head);
+  print_list(head);
+  return 0;
+}
